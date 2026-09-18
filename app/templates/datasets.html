@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}datasets · lab-data-desk{% endblock %}
+{% block wrap_class %} wrap-wide{% endblock %}
+{% block content %}
+<section class="panel">
+  <h2 class="label-with-tip">
+    registered datasets
+    <button type="button" class="tip-btn" data-tip="datasets are registered csvs - metadata lives here, the bytes live under uploads/" aria-label="about datasets">?</button>
+  </h2>
+  <form class="filter-form" method="get" action="/">
+    <label>
+      <strong class="label-with-tip">
+        filter by tag
+        <button type="button" class="tip-btn" data-tip="uses the dataset_tags table - exact tag match, not a fuzzy search" aria-label="about tag filter">?</button>
+      </strong>
+      <input name="tag" type="text" value="{{ tag_filter }}" placeholder="e.g. elisa" />
+    </label>
+    <button class="btn btn-tiny" type="submit">filter</button>
+    {% if tag_filter %}
+    <a class="quiet" href="/">clear</a>
+    {% endif %}
+  </form>
+
+  {% if datasets %}
+  <table>
+    <thead>
+      <tr>
+        <th>id</th>
+        <th>name</th>
+        <th>owner</th>
+        <th>tags</th>
+        <th>created</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for d in datasets %}
+      <tr>
+        <td><a href="/datasets/{{ d.id }}">{{ d.id }}</a></td>
+        <td><a href="/datasets/{{ d.id }}">{{ d.name }}</a></td>
+        <td>{{ d.owner }}</td>
+        <td>{% if d.tags %}{{ d.tags | join(", ") }}{% else %}-{% endif %}</td>
+        <td class="mono">{{ d.created_at }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="empty">no datasets yet{% if tag_filter %} for tag "{{ tag_filter }}"{% endif %} - register a csv below.</p>
+  {% endif %}
+</section>
+
+<section class="panel">
+  <h2>register csv</h2>
+  <form method="post" action="/datasets" enctype="multipart/form-data">
+    <label>
+      <strong>name</strong>
+      <input name="name" type="text" required placeholder="jan plate run" />
+    </label>
+    <label>
+      <strong>owner</strong>
+      <input name="owner" type="text" required placeholder="gunjana" />
+    </label>
+    <label>
+      <strong class="label-with-tip">
+        tags
+        <button type="button" class="tip-btn" data-tip="comma-separated labels stored in dataset_tags - useful later for filter by tag" aria-label="about tags">?</button>
+      </strong>
+      <input name="tags" type="text" placeholder="elisa, pilot" />
+      <span class="hint">comma-separated</span>
+    </label>
+    <label>
+      <strong class="label-with-tip">
+        schema notes
+        <button type="button" class="tip-btn" data-tip="free text for humans - what columns mean. sample expects sample_id, assay, value, run_date" aria-label="about schema notes">?</button>
+      </strong>
+      <textarea name="schema_notes" rows="2" placeholder="sample_id, assay, value, run_date"></textarea>
+    </label>
+    <label>
+      <strong class="label-with-tip">
+        csv file
+        <button type="button" class="tip-btn" data-tip="stored under uploads/ with a random prefix - never executed, only read by the pandas worker" aria-label="about csv file">?</button>
+      </strong>
+      <input name="file" type="file" accept=".csv,text/csv" required />
+      <span class="hint">try sample_data/assays.csv</span>
+    </label>
+    <button class="btn" type="submit">register</button>
+  </form>
+</section>
+{% endblock %}

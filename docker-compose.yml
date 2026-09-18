@@ -1,0 +1,28 @@
+# local demo - api + worker share sqlite + uploads volumes
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      LAB_DATA_DESK_DB: /app/data/lab-data-desk.db
+      LAB_DATA_DESK_UPLOADS: /app/uploads
+    volumes:
+      - labdesk-data:/app/data
+      - labdesk-uploads:/app/uploads
+
+  worker:
+    build: .
+    command: ["python", "-m", "app.worker"]
+    environment:
+      LAB_DATA_DESK_DB: /app/data/lab-data-desk.db
+      LAB_DATA_DESK_UPLOADS: /app/uploads
+    volumes:
+      - labdesk-data:/app/data
+      - labdesk-uploads:/app/uploads
+    depends_on:
+      - api
+
+volumes:
+  labdesk-data:
+  labdesk-uploads:

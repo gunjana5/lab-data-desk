@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}job {{ job.id }} · lab-data-desk{% endblock %}
+{% block content %}
+<section class="panel">
+  <p class="crumb"><a href="/jobs">jobs</a> / {{ job.id }}</p>
+  <h2>job {{ job.id }}</h2>
+  <dl class="meta">
+    <div>
+      <dt class="label-with-tip">
+        status
+        <button type="button" class="tip-btn" data-tip="queued waiting for worker, running while pandas runs, succeeded stores summary, failed keeps error_message" aria-label="about job status">?</button>
+      </dt>
+      <dd><span class="status status-{{ job.status }}">{{ job.status }}</span></dd>
+    </div>
+    <div><dt>dataset</dt><dd>{% if dataset %}<a href="/datasets/{{ dataset.id }}">{{ dataset.name }}</a>{% else %}{{ job.dataset_id }}{% endif %}</dd></div>
+    <div><dt>created</dt><dd class="mono">{{ job.created_at }}</dd></div>
+    <div><dt>started</dt><dd class="mono">{{ job.started_at or "-" }}</dd></div>
+    <div><dt>finished</dt><dd class="mono">{{ job.finished_at or "-" }}</dd></div>
+  </dl>
+
+  {% if job.error_message %}
+  <p class="error"><strong>error:</strong> {{ job.error_message }}</p>
+  {% endif %}
+
+  {% if job.result %}
+  <p class="action-with-tip">
+    <a class="btn btn-tiny" href="/jobs/{{ job.id }}/export">export json summary</a>
+    <button type="button" class="tip-btn tip-beside-btn" data-tip="raw summary_json from job_results" aria-label="about export">?</button>
+  </p>
+  <h2 class="label-with-tip">
+    summary
+    <button type="button" class="tip-btn" data-tip="pandas pass: row_count, missing_values, per_assay mean/std, z-score outliers" aria-label="about summary">?</button>
+  </h2>
+  <pre class="summary">{{ summary_pretty }}</pre>
+  {% elif job.status == "queued" or job.status == "running" %}
+  <p class="empty">
+    waiting for the worker - refresh in a moment.
+    <button type="button" class="tip-btn" data-tip="if this sticks on queued, the worker process is probably not running" aria-label="about waiting">?</button>
+  </p>
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,280 @@
+/* light pages - form + table + ? tips */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: #f4f4f4;
+  color: #111;
+}
+
+a,
+button {
+  color: #111;
+}
+
+button,
+.btn {
+  border: 1px solid #ccc;
+  background: #fff;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  font: inherit;
+}
+
+a.btn {
+  text-decoration: none;
+  display: inline-block;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.5rem 0 0;
+}
+
+td,
+th {
+  border-bottom: 1px solid #ddd;
+  padding: 0.35rem 0.5rem;
+  text-align: left;
+}
+
+.wrap {
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 1rem;
+  background: #fff;
+}
+
+/* jobs table needs a bit more room */
+.wrap-wide {
+  max-width: 56rem;
+}
+
+header {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+h1 {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+h2 {
+  margin: 0 0 0.7rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+nav {
+  display: flex;
+  gap: 0.85rem;
+  margin-top: 0.5rem;
+}
+
+nav a {
+  text-decoration: none;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+.muted {
+  color: #555;
+}
+
+.mono {
+  font-family: ui-monospace, Menlo, monospace;
+  word-break: break-all;
+  font-size: 0.85rem;
+}
+
+.panel {
+  margin-bottom: 1.2rem;
+}
+
+label {
+  display: block;
+  margin: 0.7rem 0;
+}
+
+label input,
+label textarea,
+label select {
+  display: block;
+  width: 100%;
+  max-width: 28rem;
+  margin-top: 0.25rem;
+  padding: 0.3rem 0.4rem;
+  border: 1px solid #ccc;
+  font: inherit;
+}
+
+label textarea {
+  resize: vertical;
+}
+
+.hint {
+  display: block;
+  margin-top: 0.2rem;
+  color: #555;
+  font-size: 0.85rem;
+}
+
+.filter-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: end;
+  margin: 0.5rem 0 0.75rem;
+}
+
+.filter-form label {
+  margin: 0;
+}
+
+.filter-form label input {
+  width: 10rem;
+}
+
+.quiet {
+  color: #555;
+  font-size: 0.9rem;
+  align-self: center;
+}
+
+.crumb {
+  margin: 0 0 0.5rem;
+  color: #555;
+  font-size: 0.9rem;
+}
+
+.meta {
+  margin: 0 0 0.75rem;
+}
+
+.meta > div {
+  margin: 0.35rem 0;
+}
+
+.meta dt {
+  display: inline;
+  font-weight: 600;
+  margin-right: 0.35rem;
+}
+
+.meta dt::after {
+  content: ":";
+}
+
+.meta dd {
+  display: inline;
+  margin: 0;
+}
+
+.notes {
+  margin: 0.5rem 0 0.75rem;
+  color: #333;
+}
+
+.empty {
+  color: #555;
+  margin: 0.5rem 0;
+}
+
+.error,
+.err {
+  color: #a33;
+}
+
+.action-with-tip {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+  margin: 0.75rem 0;
+}
+
+.btn-tiny {
+  font-size: 0.85rem;
+  padding: 0.2rem 0.45rem;
+}
+
+.status {
+  font-family: ui-monospace, Menlo, monospace;
+  font-size: 0.85rem;
+}
+
+.summary {
+  margin: 0.5rem 0 0;
+  padding: 0.6rem;
+  border: 1px solid #ddd;
+  background: #fafafa;
+  overflow-x: auto;
+  font-family: ui-monospace, Menlo, monospace;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  white-space: pre-wrap;
+}
+
+.footer {
+  margin: 1.4rem 0 0;
+  padding-top: 0.75rem;
+  border-top: 1px solid #ddd;
+  color: #555;
+  font-size: 0.9rem;
+}
+
+.label-with-tip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  flex-wrap: wrap;
+}
+
+/* ? pop - same habit as the other desks, ? not i */
+.tip-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  padding: 0;
+  margin-left: 0.28rem;
+  font-size: 0.75rem;
+  line-height: 1;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+.tip-btn:hover,
+.tip-btn:focus-visible,
+.tip-btn.is-open {
+  background: #eee;
+  outline: none;
+}
+
+.tip-pop {
+  position: fixed;
+  z-index: 10050;
+  min-width: 11.5rem;
+  max-width: min(17rem, calc(100vw - 1.25rem));
+  padding: 0.55rem 0.7rem;
+  border: 1px solid #ccc;
+  background: #fff;
+  color: #111;
+  font-family: ui-monospace, Menlo, monospace;
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+.tip-pop[hidden] {
+  display: none !important;
+}

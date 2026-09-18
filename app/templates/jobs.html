@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}jobs · lab-data-desk{% endblock %}
+{% block wrap_class %} wrap-wide{% endblock %}
+{% block content %}
+<section class="panel">
+  <h2 class="label-with-tip">
+    jobs
+    <button type="button" class="tip-btn" data-tip="all jobs across datasets - status shows queued / running / succeeded / failed" aria-label="about jobs list">?</button>
+  </h2>
+  {% if jobs %}
+  <table>
+    <thead>
+      <tr>
+        <th>id</th>
+        <th>dataset</th>
+        <th>status</th>
+        <th>created</th>
+        <th>finished</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for j in jobs %}
+      <tr>
+        <td><a href="/jobs/{{ j.id }}">{{ j.id }}</a></td>
+        <td><a href="/datasets/{{ j.dataset_id }}">{{ j.dataset_id }}</a></td>
+        <td><span class="status status-{{ j.status }}">{{ j.status }}</span></td>
+        <td class="mono">{{ j.created_at }}</td>
+        <td class="mono">{{ j.finished_at or "-" }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="empty">no jobs yet.</p>
+  {% endif %}
+</section>
+{% endblock %}

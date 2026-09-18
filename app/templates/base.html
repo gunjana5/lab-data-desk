@@ -1,0 +1,38 @@
+{# shell + tips - pages extend this #}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}lab-data-desk{% endblock %}</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <div class="wrap{% block wrap_class %}{% endblock %}">
+    <header>
+      <h1>lab-data-desk</h1>
+      <p class="muted">register a csv, enqueue a job, worker writes the summary. not a lims.</p>
+      <nav aria-label="primary">
+        <a href="/">datasets</a>
+        <a href="/jobs">jobs</a>
+      </nav>
+    </header>
+
+    {% block content %}{% endblock %}
+
+    <p class="footer">
+      demo - not a lims
+      <button
+        type="button"
+        class="tip-btn"
+        data-tip="poke any small ? for a plain note on what that bit does - and sometimes why"
+        aria-label="about tips"
+      >?</button>
+    </p>
+  </div>
+
+  {# tip pop lives on body so overflow parents dont clip it #}
+  <div id="tip-pop" class="tip-pop" hidden role="tooltip"></div>
+  <script src="/static/tips.js"></script>
+</body>
+</html>

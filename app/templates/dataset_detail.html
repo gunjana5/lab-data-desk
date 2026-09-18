@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}{{ dataset.name }} · lab-data-desk{% endblock %}
+{% block content %}
+<section class="panel">
+  <p class="crumb"><a href="/">datasets</a> / {{ dataset.id }}</p>
+  <h2>{{ dataset.name }}</h2>
+  <dl class="meta">
+    <div><dt>owner</dt><dd>{{ dataset.owner }}</dd></div>
+    <div><dt>tags</dt><dd>{% if dataset.tags %}{{ dataset.tags | join(", ") }}{% else %}none{% endif %}</dd></div>
+    <div><dt>created</dt><dd class="mono">{{ dataset.created_at }}</dd></div>
+    <div>
+      <dt class="label-with-tip">
+        file
+        <button type="button" class="tip-btn" data-tip="absolute path on disk under uploads/ - the worker opens this when it claims the job" aria-label="about file path">?</button>
+      </dt>
+      <dd class="mono">{{ dataset.file_path }}</dd>
+    </div>
+  </dl>
+  {% if dataset.schema_notes %}
+  <p class="notes"><strong>schema notes:</strong> {{ dataset.schema_notes }}</p>
+  {% endif %}
+  <form method="post" action="/datasets/{{ dataset.id }}/jobs" class="action-with-tip">
+    <button class="btn" type="submit">enqueue analysis job</button>
+    <button type="button" class="tip-btn tip-beside-btn" data-tip="inserts a queued job for this dataset - open a second terminal with python -m app.worker or the job stays queued" aria-label="about enqueue button">?</button>
+  </form>
+</section>
+
+<section class="panel">
+  <h2>jobs for this dataset</h2>
+  {% if jobs %}
+  <table>
+    <thead>
+      <tr>
+        <th>id</th>
+        <th>
+          <span class="label-with-tip">
+            status
+            <button type="button" class="tip-btn" data-tip="queued = waiting, running = worker claimed it, succeeded / failed = finished" aria-label="about status">?</button>
+          </span>
+        </th>
+        <th>created</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for j in jobs %}
+      <tr>
+        <td><a href="/jobs/{{ j.id }}">{{ j.id }}</a></td>
+        <td><span class="status status-{{ j.status }}">{{ j.status }}</span></td>
+        <td class="mono">{{ j.created_at }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="empty">no jobs yet - enqueue one above so the worker has something to claim.</p>
+  {% endif %}
+</section>
+{% endblock %}
