@@ -2,7 +2,7 @@
 
 ## what it is
 
-Register a CSV with owner, tags, and schema notes; enqueue an analysis job; browse the summary when a separate worker finishes. Demo of register -> queue -> result - not a real LIMS. 2026.
+Register a CSV with owner, tags, and schema notes; enqueue an analysis job; browse the summary when a separate worker finishes. Demo of register -> queue -> result - not a real LIMS. Sep 2026 - Present.
 
 ## layout
 
